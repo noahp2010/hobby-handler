@@ -110,13 +110,10 @@ export default function LandingPage() {
     <div style={{ background: '#020617', minHeight: '100vh', fontFamily: 'sans-serif', color: 'white' }}>
 
       {/* Nav */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(2,6,23,0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #1e293b' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, background: '#4f46e5', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ color: 'white', fontWeight: 800, fontSize: 13 }}>HH</span>
-            </div>
-            <span style={{ color: 'white', fontWeight: 700, fontSize: 18 }}>Hobby Handler</span>
+      <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(2,6,23,0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #1e293b', paddingTop: 8 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 72 }}>
+          <div style={{ width: 280, height: 72, position: 'relative' }}>
+            <img src="/logo.svg" alt="Hobby Handler" style={{ height: 152, maxWidth: '100%', width: 'auto', position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }} />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
