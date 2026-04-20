@@ -241,15 +241,29 @@ export default function FloorPlanPage() {
         )}
 
         {!isText && (
-          <text
-            x={item.x + item.w / 2} y={item.y + item.h / 2}
-            textAnchor="middle" dominantBaseline="central"
-            fontSize={isElec ? 16 : item.type === 'booth' ? 12 : 11}
-            fill="white" fontWeight="600"
-            style={{ pointerEvents: 'none', userSelect: 'none' }}
-          >
-            {isElec ? '⚡' : item.label}
-          </text>
+          isElec ? (
+            <foreignObject
+              x={item.x + item.w / 2 - 9}
+              y={item.y + item.h / 2 - 9}
+              width={18}
+              height={18}
+              style={{ pointerEvents: 'none' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+                <Zap size={14} color="white" strokeWidth={2.5} />
+              </div>
+            </foreignObject>
+          ) : (
+            <text
+              x={item.x + item.w / 2} y={item.y + item.h / 2}
+              textAnchor="middle" dominantBaseline="central"
+              fontSize={item.type === 'booth' ? 12 : 11}
+              fill="white" fontWeight="600"
+              style={{ pointerEvents: 'none', userSelect: 'none' }}
+            >
+              {item.label}
+            </text>
+          )
         )}
 
         {isText && (
