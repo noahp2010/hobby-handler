@@ -64,13 +64,9 @@ export default function DashboardLayout({ children }) {
       }}>
 
         {/* Logo */}
-        <div style={{ padding: '20px 24px', borderBottom: '1px solid #1e293b', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ width: '36px', height: '36px', backgroundColor: '#4f46e5', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ color: 'white', fontWeight: 'bold', fontSize: '13px' }}>HH</span>
-          </div>
-          <div>
-            <p style={{ color: 'white', fontWeight: '600', fontSize: '14px', margin: 0 }}>Hobby Handler</p>
-            <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Event Platform</p>
+        <div style={{ padding: '32px 24px', borderBottom: '1px solid #1e293b' }}>
+          <div style={{ marginBottom: 0 }}>
+            <img src="/logo.svg" alt="Hobby Handler" style={{ height: 140, maxWidth: '100%', width: 'auto' }} />
           </div>
         </div>
 

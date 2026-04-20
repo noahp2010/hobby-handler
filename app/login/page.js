@@ -35,11 +35,10 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
 
         <div className="text-center mb-10">
-          <a href="/" className="inline-flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-sm">HH</span>
+          <a href="/" className="inline-block mb-6">
+            <div style={{ marginBottom: 0 }}>
+              <img src="/logo.svg" alt="Hobby Handler" style={{ height: 170, maxWidth: '100%', width: 'auto' }} />
             </div>
-            <span className="text-white font-bold text-xl">Hobby Handler</span>
           </a>
           <h1 className="text-2xl font-bold text-white">
             {isSignUp ? 'Create your account' : 'Welcome back'}
