@@ -1,26 +1,178 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
+  --background: #020b1c;
+  --foreground: #f5f9ff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* Logo-inspired core blues */
+  --color-slate-950: #020b1c;
+  --color-slate-900: #0c1f3f;
+  --color-slate-800: #1f3a67;
+  --color-slate-700: #335282;
+  --color-slate-600: #5f7fab;
+  --color-slate-500: #89a3c8;
+  --color-slate-400: #b8cbe4;
+  --color-slate-300: #dbe7f8;
+
+  --color-indigo-950: #0e2346;
+  --color-indigo-900: #163462;
+  --color-indigo-800: #1f4a85;
+  --color-indigo-700: #2b66ad;
+  --color-indigo-600: #336bbc;
+  --color-indigo-500: #4b86d4;
+  --color-indigo-400: #6da7f0;
+  --color-indigo-300: #9cc6ff;
+
+  --color-emerald-950: #0d2747;
+  --color-emerald-900: #163b67;
+  --color-emerald-800: #24568f;
+  --color-emerald-400: #6fb1ff;
+
+  --color-amber-400: #9cc6ff;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background:
+    radial-gradient(circle at 15% -10%, #123567 0%, transparent 30%),
+    radial-gradient(circle at 85% 0%, #1f4a85 0%, transparent 28%),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Dashboard theme scopes */
+.dashboard-theme-light {
+  --color-slate-950: #eaf1ff;
+  --color-slate-900: #ffffff;
+  --color-slate-800: #d7e5fb;
+  --color-slate-700: #b8cdf0;
+  --color-slate-600: #7e98bf;
+  --color-slate-500: #5d78a3;
+  --color-slate-400: #46608a;
+  --color-slate-300: #2f476f;
+
+  --color-indigo-950: #e1ecff;
+  --color-indigo-900: #bfd6f8;
+  --color-indigo-800: #9dbff2;
+  --color-indigo-700: #6f98d8;
+  --color-indigo-600: #336bbc;
+  --color-indigo-500: #24579f;
+  --color-indigo-400: #1f4b8a;
+  --color-indigo-300: #173f76;
+
+  --color-emerald-950: #deecff;
+  --color-emerald-900: #c9ddfb;
+  --color-emerald-800: #a8c6ef;
+  --color-emerald-400: #2d6db3;
+
+  --color-amber-400: #376daf;
+}
+
+.dashboard-theme-light .bg-indigo-600,
+.dashboard-theme-light .bg-indigo-500,
+.dashboard-theme-light .hover\:bg-indigo-500:hover,
+.dashboard-theme-light .hover\:bg-indigo-600:hover {
+  color: #ffffff !important;
+}
+
+.dashboard-theme-light .bg-black\/70 {
+  background-color: rgba(16, 40, 74, 0.45) !important;
+}
+
+/* Explicit utility overrides to guarantee visible dashboard light mode */
+.dashboard-theme-light .bg-slate-950 {
+  background-color: #eaf1ff !important;
+}
+
+.dashboard-theme-light .bg-slate-900 {
+  background-color: #ffffff !important;
+}
+
+.dashboard-theme-light .bg-slate-800 {
+  background-color: #d7e5fb !important;
+}
+
+.dashboard-theme-light .bg-slate-700 {
+  background-color: #c8daf6 !important;
+}
+
+.dashboard-theme-light .hover\:bg-slate-900:hover {
+  background-color: #f4f8ff !important;
+}
+
+.dashboard-theme-light .hover\:bg-slate-800:hover,
+.dashboard-theme-light .hover\:bg-slate-700:hover {
+  background-color: #cfe0f9 !important;
+}
+
+.dashboard-theme-light .border-slate-900,
+.dashboard-theme-light .border-slate-800,
+.dashboard-theme-light .border-slate-700 {
+  border-color: #b8cdf0 !important;
+}
+
+.dashboard-theme-light .text-slate-600 {
+  color: #5d78a3 !important;
+}
+
+.dashboard-theme-light .text-slate-500 {
+  color: #4a678f !important;
+}
+
+.dashboard-theme-light .text-slate-400 {
+  color: #385274 !important;
+}
+
+.dashboard-theme-light .text-slate-300 {
+  color: #2f476f !important;
+}
+
+.dashboard-theme-light .text-indigo-400 {
+  color: #2b66ad !important;
+}
+
+.dashboard-theme-light .bg-indigo-950\/60 {
+  background-color: rgba(51, 107, 188, 0.14) !important;
+}
+
+.dashboard-theme-light .bg-emerald-950 {
+  background-color: #deecff !important;
+}
+
+.dashboard-theme-light .bg-emerald-900,
+.dashboard-theme-light .hover\:bg-emerald-900:hover,
+.dashboard-theme-light .hover\:bg-emerald-800:hover {
+  background-color: #c9ddfb !important;
+}
+
+.dashboard-theme-light .text-emerald-400 {
+  color: #2d6db3 !important;
+}
+
+.dashboard-theme-light .bg-red-950 {
+  background-color: #ffe7eb !important;
+}
+
+.dashboard-theme-light .hover\:bg-red-950:hover,
+.dashboard-theme-light .hover\:bg-red-900:hover {
+  background-color: #ffdbe2 !important;
+}
+
+.dashboard-theme-light .border-red-800 {
+  border-color: #efb2be !important;
+}
+
+.dashboard-theme-light .text-red-400 {
+  color: #b03853 !important;
+}
+
+.dashboard-theme-light .text-amber-400 {
+  color: #2e679f !important;
 }

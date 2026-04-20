@@ -10,15 +10,15 @@ const TOOLS = [
   { type: 'table_round', label: 'Round Table',   icon: Circle,   defaultW: 80,  defaultH: 80,  color: '#0369a1' },
   { type: 'stage',       label: 'Stage',         icon: Drama,    defaultW: 240, defaultH: 120, color: '#7c3aed' },
   { type: 'entrance',    label: 'Entrance/Exit', icon: DoorOpen, defaultW: 60,  defaultH: 20,  color: '#059669' },
-  { type: 'wall',        label: 'Wall',          icon: Minus,    defaultW: 160, defaultH: 16,  color: '#64748b' },
+  { type: 'wall',        label: 'Wall',          icon: Minus,    defaultW: 160, defaultH: 16,  color: 'var(--color-slate-500)' },
   { type: 'electrical',  label: 'Electrical',    icon: Zap,      defaultW: 32,  defaultH: 32,  color: '#d97706' },
   { type: 'text',        label: 'Text Label',    icon: Type,     defaultW: 120, defaultH: 40,  color: 'transparent' },
 ]
 const HANDLES = ['nw','n','ne','e','se','s','sw','w']
 const CURSORS = { n:'n-resize', ne:'ne-resize', e:'e-resize', se:'se-resize', s:'s-resize', sw:'sw-resize', w:'w-resize', nw:'nw-resize' }
-const BTN = { background:'#0f172a', border:'1px solid #334155', color:'#94a3b8', borderRadius:6, padding:'4px 10px', cursor:'pointer', fontSize:13 }
-const LBL = { color:'#64748b', fontSize:12, display:'block', marginBottom:4 }
-const INP = { width:'100%', background:'#0f172a', border:'1px solid #334155', color:'white', borderRadius:6, padding:'6px 8px', fontSize:13, boxSizing:'border-box' }
+const BTN = { background:'var(--color-slate-900)', border:'1px solid var(--color-slate-700)', color:'var(--color-slate-400)', borderRadius:6, padding:'4px 10px', cursor:'pointer', fontSize:13 }
+const LBL = { color:'var(--color-slate-500)', fontSize:12, display:'block', marginBottom:4 }
+const INP = { width:'100%', background:'var(--color-slate-900)', border:'1px solid var(--color-slate-700)', color:'var(--color-slate-300)', borderRadius:6, padding:'6px 8px', fontSize:13, boxSizing:'border-box' }
 function snap(v) { return Math.round(v / GRID) * GRID }
 let _c = 1
 function uid() { return 'i' + (_c++) + '_' + Date.now() }
@@ -223,18 +223,18 @@ export default function FloorPlanPage() {
             cx={item.x + item.w / 2} cy={item.y + item.h / 2}
             rx={item.w / 2} ry={item.h / 2}
             fill={item.color} fillOpacity={0.85}
-            stroke={isSelected ? '#f8fafc' : '#1e293b'}
+            stroke={isSelected ? '#f8fafc' : 'var(--color-slate-800)'}
             strokeWidth={isSelected ? 2.5 : 1}
           />
         ) : isText ? (
           <rect x={item.x} y={item.y} width={item.w} height={item.h}
-            fill="none" stroke={isSelected ? '#6366f1' : 'none'} strokeWidth={1} strokeDasharray="4 3" rx={3}
+            fill="none" stroke={isSelected ? 'var(--color-indigo-500)' : 'none'} strokeWidth={1} strokeDasharray="4 3" rx={3}
           />
         ) : (
           <rect x={item.x} y={item.y} width={item.w} height={item.h}
-            fill={isWall ? '#475569' : isElec ? '#d97706' : item.color}
+            fill={isWall ? 'var(--color-slate-600)' : isElec ? '#d97706' : item.color}
             fillOpacity={isWall ? 1 : 0.85}
-            stroke={isSelected ? '#f8fafc' : '#1e293b'}
+            stroke={isSelected ? '#f8fafc' : 'var(--color-slate-800)'}
             strokeWidth={isSelected ? 2.5 : 1}
             rx={item.type === 'booth' ? 6 : item.type === 'stage' ? 8 : 3}
           />
@@ -273,7 +273,7 @@ export default function FloorPlanPage() {
           return (
             <rect key={h}
               x={hx - 5} y={hy - 5} width={10} height={10}
-              fill="white" stroke="#6366f1" strokeWidth={1.5} rx={2}
+              fill="white" stroke="var(--color-indigo-500)" strokeWidth={1.5} rx={2}
               style={{ cursor: CURSORS[h] }}
               onMouseDown={e => onHandleMouseDown(e, item, h)}
             />
@@ -283,12 +283,12 @@ export default function FloorPlanPage() {
     )
   }
   return (
-    <div style={{ position: 'fixed', inset: 0, background: '#020617', display: 'flex', flexDirection: 'column', zIndex: 100 }}>
+    <div style={{ position: 'fixed', inset: 0, background: 'var(--color-slate-950)', display: 'flex', flexDirection: 'column', zIndex: 100 }}>
 
       {/* Top bar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', background: '#0f172a', borderBottom: '1px solid #1e293b', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', background: 'var(--color-slate-900)', borderBottom: '1px solid var(--color-slate-800)', flexShrink: 0 }}>
         <a href="/dashboard" style={{ ...BTN, textDecoration: 'none', marginRight: 4 }}>← Back</a>
-        <span style={{ color: 'white', fontWeight: 700, fontSize: 16 }}>Floor Plan Builder</span>
+        <span style={{ color: 'var(--color-slate-300)', fontWeight: 700, fontSize: 16 }}>Floor Plan Builder</span>
 
         <select
           value={selectedEvent}
@@ -301,18 +301,18 @@ export default function FloorPlanPage() {
         <button onClick={() => setShowRoomSetup(true)} style={BTN}>Room Setup</button>
         <button onClick={() => setZoom(z => Math.min(2, +(z + 0.1).toFixed(1)))} style={BTN}>+ Zoom</button>
         <button onClick={() => setZoom(z => Math.max(0.3, +(z - 0.1).toFixed(1)))} style={BTN}>- Zoom</button>
-        <span style={{ color: '#64748b', fontSize: 13 }}>{Math.round(zoom * 100)}%</span>
+        <span style={{ color: 'var(--color-slate-500)', fontSize: 13 }}>{Math.round(zoom * 100)}%</span>
 
         {selectedId && (
           <button onClick={deleteSelected} style={{ ...BTN, color: '#f87171', borderColor: '#7f1d1d' }}>Delete</button>
         )}
 
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10 }}>
-          {saveMsg && <span style={{ color: '#34d399', fontSize: 13 }}>{saveMsg}</span>}
+          {saveMsg && <span style={{ color: 'var(--color-emerald-400)', fontSize: 13 }}>{saveMsg}</span>}
           <button
             onClick={handleSave}
             disabled={saving}
-            style={{ ...BTN, background: '#4f46e5', color: 'white', borderColor: '#4f46e5', padding: '6px 18px', fontWeight: 600 }}
+            style={{ ...BTN, background: 'var(--color-indigo-600)', color: 'white', borderColor: 'var(--color-indigo-600)', padding: '6px 18px', fontWeight: 600 }}
           >
             {saving ? 'Saving...' : 'Save Floor Plan'}
           </button>
@@ -322,8 +322,8 @@ export default function FloorPlanPage() {
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
 
         {/* Left toolbar */}
-        <div style={{ width: 130, background: '#0f172a', borderRight: '1px solid #1e293b', padding: 10, display: 'flex', flexDirection: 'column', gap: 6, overflowY: 'auto', flexShrink: 0 }}>
-          <p style={{ color: '#475569', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Elements</p>
+        <div style={{ width: 130, background: 'var(--color-slate-900)', borderRight: '1px solid var(--color-slate-800)', padding: 10, display: 'flex', flexDirection: 'column', gap: 6, overflowY: 'auto', flexShrink: 0 }}>
+          <p style={{ color: 'var(--color-slate-600)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Elements</p>
           {TOOLS.map(tool => {
             const IconComponent = tool.icon
             return (
@@ -332,15 +332,15 @@ export default function FloorPlanPage() {
                 draggable
                 onDragStart={e => onToolbarDragStart(e, tool)}
                 style={{
-                  background: '#1e293b', border: '1px solid #334155', borderRadius: 8,
+                  background: 'var(--color-slate-800)', border: '1px solid var(--color-slate-700)', borderRadius: 8,
                   padding: '8px 6px', cursor: 'grab', textAlign: 'center',
-                  color: '#cbd5e1', fontSize: 12, userSelect: 'none',
+                  color: 'var(--color-slate-300)', fontSize: 12, userSelect: 'none',
                   transition: 'border-color 0.15s',
                 }}
-                onMouseEnter={e => e.currentTarget.style.borderColor = '#6366f1'}
-                onMouseLeave={e => e.currentTarget.style.borderColor = '#334155'}
+                onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--color-indigo-500)'}
+                onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--color-slate-700)'}
               >
-                <div style={{ marginBottom: 3 }}><IconComponent size={20} color="#cbd5e1" /></div>
+                <div style={{ marginBottom: 3 }}><IconComponent size={20} color="var(--color-slate-300)" /></div>
                 <div style={{ fontSize: 11, lineHeight: 1.2 }}>{tool.label}</div>
               </div>
             )
@@ -349,7 +349,7 @@ export default function FloorPlanPage() {
 
         {/* Canvas area */}
         <div
-          style={{ flex: 1, overflow: 'auto', background: '#0f172a', position: 'relative' }}
+          style={{ flex: 1, overflow: 'auto', background: 'var(--color-slate-900)', position: 'relative' }}
           onMouseMove={onCanvasMouseMove}
           onMouseUp={onCanvasMouseUp}
           onDragOver={e => e.preventDefault()}
@@ -360,31 +360,31 @@ export default function FloorPlanPage() {
               ref={canvasRef}
               width={roomW}
               height={roomH}
-              style={{ display: 'block', background: '#1e293b', borderRadius: 8, border: '2px solid #334155', cursor: 'default' }}
+              style={{ display: 'block', background: 'var(--color-slate-800)', borderRadius: 8, border: '2px solid var(--color-slate-700)', cursor: 'default' }}
               onMouseDown={e => { if (e.target === canvasRef.current) setSelectedId(null) }}
             >
               {/* Grid */}
               <defs>
                 <pattern id="grid" width={GRID} height={GRID} patternUnits="userSpaceOnUse">
-                  <path d={`M ${GRID} 0 L 0 0 0 ${GRID}`} fill="none" stroke="#334155" strokeWidth={0.5} opacity={0.5} />
+                  <path d={`M ${GRID} 0 L 0 0 0 ${GRID}`} fill="none" stroke="var(--color-slate-700)" strokeWidth={0.5} opacity={0.5} />
                 </pattern>
               </defs>
               <rect width={roomW} height={roomH} fill="url(#grid)" />
 
               {/* Room border */}
-              <rect x={1} y={1} width={roomW - 2} height={roomH - 2} fill="none" stroke="#475569" strokeWidth={2} rx={4} />
+              <rect x={1} y={1} width={roomW - 2} height={roomH - 2} fill="none" stroke="var(--color-slate-600)" strokeWidth={2} rx={4} />
 
               {/* Room dimensions */}
-              <text x={roomW / 2} y={roomH - 8} textAnchor="middle" fill="#475569" fontSize={11}>{roomFeetW} ft</text>
-              <text x={10} y={roomH / 2} textAnchor="middle" fill="#475569" fontSize={11} transform={`rotate(-90, 10, ${roomH / 2})`}>{roomFeetH} ft</text>
+              <text x={roomW / 2} y={roomH - 8} textAnchor="middle" fill="var(--color-slate-600)" fontSize={11}>{roomFeetW} ft</text>
+              <text x={10} y={roomH / 2} textAnchor="middle" fill="var(--color-slate-600)" fontSize={11} transform={`rotate(-90, 10, ${roomH / 2})`}>{roomFeetH} ft</text>
 
               {/* Ghost preview while dragging */}
               {ghost && (
                 <rect
                   x={ghost.x} y={ghost.y}
                   width={ghost.w} height={ghost.h}
-                  fill="#6366f1" fillOpacity={0.3}
-                  stroke="#6366f1" strokeWidth={1.5}
+                  fill="var(--color-indigo-500)" fillOpacity={0.3}
+                  stroke="var(--color-indigo-500)" strokeWidth={1.5}
                   strokeDasharray="6 3" rx={4}
                   style={{ pointerEvents: 'none' }}
                 />
@@ -396,20 +396,20 @@ export default function FloorPlanPage() {
         </div>
 
         {/* Right properties panel */}
-        <div style={{ width: 220, background: '#0f172a', borderLeft: '1px solid #1e293b', padding: 14, overflowY: 'auto', flexShrink: 0 }}>
+        <div style={{ width: 220, background: 'var(--color-slate-900)', borderLeft: '1px solid var(--color-slate-800)', padding: 14, overflowY: 'auto', flexShrink: 0 }}>
           {!selectedItem ? (
             <div>
-              <p style={{ color: '#475569', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>Properties</p>
-              <p style={{ color: '#334155', fontSize: 13 }}>Select an item to edit its properties.</p>
+              <p style={{ color: 'var(--color-slate-600)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>Properties</p>
+              <p style={{ color: 'var(--color-slate-700)', fontSize: 13 }}>Select an item to edit its properties.</p>
               <div style={{ marginTop: 24 }}>
-                <p style={{ color: '#475569', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Floor Plan</p>
-                <p style={{ color: '#64748b', fontSize: 12 }}>{items.length} items placed</p>
-                <p style={{ color: '#64748b', fontSize: 12, marginTop: 4 }}>Room: {roomFeetW}ft x {roomFeetH}ft</p>
+                <p style={{ color: 'var(--color-slate-600)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Floor Plan</p>
+                <p style={{ color: 'var(--color-slate-500)', fontSize: 12 }}>{items.length} items placed</p>
+                <p style={{ color: 'var(--color-slate-500)', fontSize: 12, marginTop: 4 }}>Room: {roomFeetW}ft x {roomFeetH}ft</p>
               </div>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <p style={{ color: '#475569', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Properties</p>
+              <p style={{ color: 'var(--color-slate-600)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Properties</p>
 
               <div>
                 <label style={LBL}>Label</label>
@@ -424,9 +424,9 @@ export default function FloorPlanPage() {
                 <label style={LBL}>Color</label>
                 <input
                   type="color"
-                  value={selectedItem.color === 'transparent' ? '#6366f1' : selectedItem.color}
+                  value={selectedItem.color === 'transparent' ? '#4b86d4' : selectedItem.color}
                   onChange={e => updateSelected('color', e.target.value)}
-                  style={{ width: '100%', height: 36, border: '1px solid #334155', borderRadius: 6, background: 'none', cursor: 'pointer' }}
+                  style={{ width: '100%', height: 36, border: '1px solid var(--color-slate-700)', borderRadius: 6, background: 'none', cursor: 'pointer' }}
                 />
               </div>
 
@@ -502,8 +502,8 @@ export default function FloorPlanPage() {
       {/* Room setup modal */}
       {showRoomSetup && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ background: '#0f172a', border: '1px solid #334155', borderRadius: 16, padding: 32, width: 360 }}>
-            <h2 style={{ color: 'white', fontWeight: 700, fontSize: 18, marginBottom: 24 }}>Room Setup</h2>
+          <div style={{ background: 'var(--color-slate-900)', border: '1px solid var(--color-slate-700)', borderRadius: 16, padding: 32, width: 360 }}>
+            <h2 style={{ color: 'var(--color-slate-300)', fontWeight: 700, fontSize: 18, marginBottom: 24 }}>Room Setup</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div>
                 <label style={LBL}>Room Width (feet)</label>
@@ -524,7 +524,7 @@ export default function FloorPlanPage() {
               <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
                 <button
                   onClick={() => setShowRoomSetup(false)}
-                  style={{ ...BTN, flex: 1, background: '#4f46e5', color: 'white', borderColor: '#4f46e5', padding: '10px', fontWeight: 600 }}
+                  style={{ ...BTN, flex: 1, background: 'var(--color-indigo-600)', color: 'white', borderColor: 'var(--color-indigo-600)', padding: '10px', fontWeight: 600 }}
                 >
                   Apply
                 </button>

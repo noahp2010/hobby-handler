@@ -31,9 +31,12 @@ const navItems = [
   { label: 'Settings',   href: '/dashboard/settings',  icon: Settings },
 ]
 
+const DASHBOARD_THEME_KEY = 'hh-dashboard-theme'
+
 export default function DashboardLayout({ children }) {
   const pathname = usePathname()
   const [user, setUser] = useState(null)
+  const [theme, setTheme] = useState('dark')
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -42,20 +45,40 @@ export default function DashboardLayout({ children }) {
     })
   }, [])
 
+  useEffect(() => {
+    const savedTheme = localStorage.getItem(DASHBOARD_THEME_KEY)
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      setTheme(savedTheme)
+    }
+
+    const onThemeChange = (event) => {
+      const nextTheme = event?.detail
+      if (nextTheme === 'light' || nextTheme === 'dark') {
+        setTheme(nextTheme)
+      }
+    }
+
+    window.addEventListener('hh-theme-change', onThemeChange)
+    return () => window.removeEventListener('hh-theme-change', onThemeChange)
+  }, [])
+
   async function handleSignOut() {
     await supabase.auth.signOut()
     window.location.href = '/login'
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#020617' }}>
+    <div
+      className={`dashboard-theme-${theme}`}
+      style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--color-slate-950)' }}
+    >
 
       {/* Sidebar - always visible */}
       <aside style={{
         width: '256px',
         minWidth: '256px',
-        backgroundColor: '#0f172a',
-        borderRight: '1px solid #1e293b',
+        backgroundColor: 'var(--color-slate-900)',
+        borderRight: '1px solid var(--color-slate-800)',
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
@@ -64,7 +87,7 @@ export default function DashboardLayout({ children }) {
       }}>
 
         {/* Logo */}
-        <div style={{ padding: '32px 24px', borderBottom: '1px solid #1e293b' }}>
+        <div style={{ padding: '32px 24px', borderBottom: '1px solid var(--color-slate-800)' }}>
           <div style={{ marginBottom: 0 }}>
             <img src="/logo.svg" alt="Hobby Handler" style={{ height: 140, maxWidth: '100%', width: 'auto' }} />
           </div>
@@ -89,21 +112,21 @@ export default function DashboardLayout({ children }) {
                   fontSize: '14px',
                   textDecoration: 'none',
                   marginBottom: '2px',
-                  backgroundColor: active ? '#4f46e5' : 'transparent',
-                  color: active ? 'white' : '#94a3b8',
+                  backgroundColor: active ? 'var(--color-indigo-600)' : 'transparent',
+                  color: active ? 'white' : 'var(--color-slate-400)',
                   fontWeight: active ? '500' : '400',
                   transition: 'all 0.15s',
                 }}
                 onMouseEnter={e => {
                   if (!active) {
-                    e.currentTarget.style.backgroundColor = '#1e293b'
+                    e.currentTarget.style.backgroundColor = 'var(--color-slate-800)'
                     e.currentTarget.style.color = 'white'
                   }
                 }}
                 onMouseLeave={e => {
                   if (!active) {
                     e.currentTarget.style.backgroundColor = 'transparent'
-                    e.currentTarget.style.color = '#94a3b8'
+                    e.currentTarget.style.color = 'var(--color-slate-400)'
                   }
                 }}
               >
@@ -116,9 +139,9 @@ export default function DashboardLayout({ children }) {
         </nav>
 
         {/* User */}
-        <div style={{ padding: '16px', borderTop: '1px solid #1e293b' }}>
+        <div style={{ padding: '16px', borderTop: '1px solid var(--color-slate-800)' }}>
           <p style={{ 
-            color: '#475569', 
+            color: 'var(--color-slate-600)', 
             fontSize: '11px', 
             marginBottom: '8px', 
             paddingLeft: '12px',
@@ -139,14 +162,14 @@ export default function DashboardLayout({ children }) {
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              color: '#94a3b8',
+              color: 'var(--color-slate-400)',
               fontSize: '14px',
               padding: '8px 12px',
               borderRadius: '8px',
               transition: 'all 0.15s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.color = '#f87171'; e.currentTarget.style.backgroundColor = '#1e293b' }}
-            onMouseLeave={e => { e.currentTarget.style.color = '#94a3b8'; e.currentTarget.style.backgroundColor = 'transparent' }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#f87171'; e.currentTarget.style.backgroundColor = 'var(--color-slate-800)' }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-slate-400)'; e.currentTarget.style.backgroundColor = 'transparent' }}
           >
             <LogOut size={16} />
             Sign out

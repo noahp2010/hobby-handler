@@ -146,39 +146,39 @@ export default function InvoicesPage() {
             {/* Invoice header */}
             <div className="flex justify-between items-start mb-10">
               <div>
-                <h1 style={{ fontSize: 28, fontWeight: 800, color: '#1e293b', margin: 0 }}>INVOICE</h1>
-                <p style={{ color: '#64748b', marginTop: 4, fontSize: 14 }}>{invoiceNumber}</p>
+                <h1 style={{ fontSize: 28, fontWeight: 800, color: '#1f3a67', margin: 0 }}>INVOICE</h1>
+                <p style={{ color: '#89a3c8', marginTop: 4, fontSize: 14 }}>{invoiceNumber}</p>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <p style={{ fontWeight: 700, fontSize: 18, color: '#1e293b', margin: 0 }}>
+                <p style={{ fontWeight: 700, fontSize: 18, color: '#1f3a67', margin: 0 }}>
                   {orgProfile.org_name || 'Your Organization'}
                 </p>
-                {orgProfile.org_address && <p style={{ color: '#64748b', fontSize: 13, marginTop: 2 }}>{orgProfile.org_address}</p>}
-                {orgProfile.org_phone && <p style={{ color: '#64748b', fontSize: 13 }}>{orgProfile.org_phone}</p>}
-                {orgProfile.org_website && <p style={{ color: '#6366f1', fontSize: 13 }}>{orgProfile.org_website}</p>}
+                {orgProfile.org_address && <p style={{ color: '#89a3c8', fontSize: 13, marginTop: 2 }}>{orgProfile.org_address}</p>}
+                {orgProfile.org_phone && <p style={{ color: '#89a3c8', fontSize: 13 }}>{orgProfile.org_phone}</p>}
+                {orgProfile.org_website && <p style={{ color: '#4b86d4', fontSize: 13 }}>{orgProfile.org_website}</p>}
               </div>
             </div>
 
             {/* Bill to / event info */}
             <div className="flex gap-10 mb-10">
               <div style={{ flex: 1 }}>
-                <p style={{ color: '#94a3b8', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Bill To</p>
-                <p style={{ fontWeight: 700, fontSize: 16, color: '#1e293b', margin: 0 }}>{vendor?.business_name}</p>
-                {vendor?.contact_name && <p style={{ color: '#64748b', fontSize: 13, marginTop: 2 }}>{vendor.contact_name}</p>}
-                {vendor?.email && <p style={{ color: '#64748b', fontSize: 13 }}>{vendor.email}</p>}
-                {vendor?.phone && <p style={{ color: '#64748b', fontSize: 13 }}>{vendor.phone}</p>}
+                <p style={{ color: '#b8cbe4', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Bill To</p>
+                <p style={{ fontWeight: 700, fontSize: 16, color: '#1f3a67', margin: 0 }}>{vendor?.business_name}</p>
+                {vendor?.contact_name && <p style={{ color: '#89a3c8', fontSize: 13, marginTop: 2 }}>{vendor.contact_name}</p>}
+                {vendor?.email && <p style={{ color: '#89a3c8', fontSize: 13 }}>{vendor.email}</p>}
+                {vendor?.phone && <p style={{ color: '#89a3c8', fontSize: 13 }}>{vendor.phone}</p>}
               </div>
               <div style={{ flex: 1 }}>
-                <p style={{ color: '#94a3b8', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Event Details</p>
-                <p style={{ fontWeight: 700, fontSize: 16, color: '#1e293b', margin: 0 }}>{event?.name}</p>
-                {event?.venue_location && <p style={{ color: '#64748b', fontSize: 13, marginTop: 2 }}>{event.venue_location}</p>}
-                {event?.start_date && <p style={{ color: '#64748b', fontSize: 13 }}>{new Date(event.start_date).toLocaleDateString()}</p>}
+                <p style={{ color: '#b8cbe4', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Event Details</p>
+                <p style={{ fontWeight: 700, fontSize: 16, color: '#1f3a67', margin: 0 }}>{event?.name}</p>
+                {event?.venue_location && <p style={{ color: '#89a3c8', fontSize: 13, marginTop: 2 }}>{event.venue_location}</p>}
+                {event?.start_date && <p style={{ color: '#89a3c8', fontSize: 13 }}>{new Date(event.start_date).toLocaleDateString()}</p>}
               </div>
               <div>
-                <p style={{ color: '#94a3b8', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Invoice Info</p>
-                <p style={{ fontSize: 13, color: '#64748b', margin: 0 }}>Date: {new Date().toLocaleDateString()}</p>
-                {dueDate && <p style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>Due: {new Date(dueDate).toLocaleDateString()}</p>}
-                <p style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>
+                <p style={{ color: '#b8cbe4', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Invoice Info</p>
+                <p style={{ fontSize: 13, color: '#89a3c8', margin: 0 }}>Date: {new Date().toLocaleDateString()}</p>
+                {dueDate && <p style={{ fontSize: 13, color: '#89a3c8', marginTop: 2 }}>Due: {new Date(dueDate).toLocaleDateString()}</p>}
+                <p style={{ fontSize: 13, color: '#89a3c8', marginTop: 2 }}>
                   Status: <span style={{ color: vendor?.payment_status === 'paid' ? '#059669' : '#dc2626', fontWeight: 700 }}>
                     {(vendor?.payment_status || 'unpaid').toUpperCase()}
                   </span>
@@ -190,20 +190,20 @@ export default function InvoicesPage() {
             <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 24 }}>
               <thead>
                 <tr style={{ background: '#f1f5f9' }}>
-                  <th style={{ textAlign: 'left', padding: '10px 16px', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5 }}>Description</th>
-                  <th style={{ textAlign: 'left', padding: '10px 16px', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5 }}>Booth</th>
-                  <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.5 }}>Amount</th>
+                  <th style={{ textAlign: 'left', padding: '10px 16px', fontSize: 12, fontWeight: 700, color: '#89a3c8', textTransform: 'uppercase', letterSpacing: 0.5 }}>Description</th>
+                  <th style={{ textAlign: 'left', padding: '10px 16px', fontSize: 12, fontWeight: 700, color: '#89a3c8', textTransform: 'uppercase', letterSpacing: 0.5 }}>Booth</th>
+                  <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 12, fontWeight: 700, color: '#89a3c8', textTransform: 'uppercase', letterSpacing: 0.5 }}>Amount</th>
                 </tr>
               </thead>
               <tbody>
                 <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
-                  <td style={{ padding: '14px 16px', fontSize: 14, color: '#1e293b' }}>
+                  <td style={{ padding: '14px 16px', fontSize: 14, color: '#1f3a67' }}>
                     Vendor Booth Fee — {event?.name}
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: 14, color: '#64748b' }}>
+                  <td style={{ padding: '14px 16px', fontSize: 14, color: '#89a3c8' }}>
                     {vendor?.booth_number || 'TBD'}
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: 14, color: '#1e293b', textAlign: 'right', fontWeight: 600 }}>
+                  <td style={{ padding: '14px 16px', fontSize: 14, color: '#1f3a67', textAlign: 'right', fontWeight: 600 }}>
                     ${(vendor?.payment_amount || 0).toFixed(2)}
                   </td>
                 </tr>
@@ -214,8 +214,8 @@ export default function InvoicesPage() {
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 24 }}>
               <div style={{ minWidth: 240 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: '2px solid #e2e8f0' }}>
-                  <span style={{ fontWeight: 800, fontSize: 16, color: '#1e293b' }}>Total</span>
-                  <span style={{ fontWeight: 800, fontSize: 16, color: '#1e293b' }}>${(vendor?.payment_amount || 0).toFixed(2)}</span>
+                  <span style={{ fontWeight: 800, fontSize: 16, color: '#1f3a67' }}>Total</span>
+                  <span style={{ fontWeight: 800, fontSize: 16, color: '#1f3a67' }}>${(vendor?.payment_amount || 0).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -223,12 +223,12 @@ export default function InvoicesPage() {
             {/* Notes */}
             {invoiceNote && (
               <div style={{ background: '#f8fafc', borderRadius: 8, padding: '14px 16px', marginBottom: 16 }}>
-                <p style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>Notes</p>
-                <p style={{ fontSize: 13, color: '#64748b', margin: 0 }}>{invoiceNote}</p>
+                <p style={{ fontSize: 12, fontWeight: 700, color: '#b8cbe4', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>Notes</p>
+                <p style={{ fontSize: 13, color: '#89a3c8', margin: 0 }}>{invoiceNote}</p>
               </div>
             )}
 
-            <p style={{ fontSize: 12, color: '#94a3b8', textAlign: 'center', marginTop: 32 }}>
+            <p style={{ fontSize: 12, color: '#b8cbe4', textAlign: 'center', marginTop: 32 }}>
               Thank you for being part of {event?.name}!
             </p>
           </div>

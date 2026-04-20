@@ -9,7 +9,7 @@ const PLANS = {
     monthlyPrice: 19,
     annualPrice: 200,
     annualMonthly: (200 / 12).toFixed(0),
-    color: '#6366f1',
+    color: '#4b86d4',
     features: [
       '60 vendors max per event',
       'Budgeting and finance tools',
@@ -29,7 +29,7 @@ const PLANS = {
     monthlyPrice: 40,
     annualPrice: 450,
     annualMonthly: (450 / 12).toFixed(0),
-    color: '#8b5cf6',
+    color: '#7aa8e6',
     features: [
       'Everything in Basic',
       'Unlimited vendors per event',
@@ -95,30 +95,30 @@ export default function PricingPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#020617', padding: '60px 20px' }}>
+    <div style={{ minHeight: '100vh', background: '#020b1c', padding: '60px 20px' }}>
 
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 48 }}>
         <div style={{ marginBottom: 16 }}>
-          <a href="/" style={{ color: '#64748b', fontSize: 14, textDecoration: 'none' }}>← Back to login</a>
+          <a href="/" style={{ color: '#89a3c8', fontSize: 14, textDecoration: 'none' }}>← Back to login</a>
         </div>
         <h1 style={{ color: 'white', fontSize: 40, fontWeight: 800, margin: 0 }}>Simple, transparent pricing</h1>
-        <p style={{ color: '#64748b', fontSize: 18, marginTop: 12 }}>Built for collectible event organizers. Cancel anytime.</p>
+        <p style={{ color: '#89a3c8', fontSize: 18, marginTop: 12 }}>Built for collectible event organizers. Cancel anytime.</p>
 
         {/* Toggle */}
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginTop: 28, background: '#0f172a', border: '1px solid #1e293b', borderRadius: 50, padding: '6px 8px' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginTop: 28, background: '#0c1f3f', border: '1px solid #1f3a67', borderRadius: 50, padding: '6px 8px' }}>
           <button
             onClick={() => setAnnual(false)}
-            style={{ background: !annual ? '#4f46e5' : 'transparent', color: !annual ? 'white' : '#64748b', border: 'none', borderRadius: 50, padding: '8px 20px', cursor: 'pointer', fontSize: 14, fontWeight: 600, transition: 'all 0.2s' }}
+            style={{ background: !annual ? '#336bbc' : 'transparent', color: !annual ? 'white' : '#89a3c8', border: 'none', borderRadius: 50, padding: '8px 20px', cursor: 'pointer', fontSize: 14, fontWeight: 600, transition: 'all 0.2s' }}
           >
             Monthly
           </button>
           <button
             onClick={() => setAnnual(true)}
-            style={{ background: annual ? '#4f46e5' : 'transparent', color: annual ? 'white' : '#64748b', border: 'none', borderRadius: 50, padding: '8px 20px', cursor: 'pointer', fontSize: 14, fontWeight: 600, transition: 'all 0.2s' }}
+            style={{ background: annual ? '#336bbc' : 'transparent', color: annual ? 'white' : '#89a3c8', border: 'none', borderRadius: 50, padding: '8px 20px', cursor: 'pointer', fontSize: 14, fontWeight: 600, transition: 'all 0.2s' }}
           >
             Annual
-            <span style={{ marginLeft: 6, background: '#065f46', color: '#34d399', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 50 }}>Save up to 6%</span>
+            <span style={{ marginLeft: 6, background: '#123567', color: '#6fb1ff', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 50 }}>Save up to 6%</span>
           </button>
         </div>
       </div>
@@ -129,8 +129,8 @@ export default function PricingPage() {
           <div
             key={key}
             style={{
-              background: '#0f172a',
-              border: key === 'pro' ? '2px solid #6366f1' : '1px solid #1e293b',
+              background: '#0c1f3f',
+              border: key === 'pro' ? '2px solid #4b86d4' : '1px solid #1f3a67',
               borderRadius: 20,
               padding: 36,
               width: 380,
@@ -139,7 +139,7 @@ export default function PricingPage() {
             }}
           >
             {key === 'pro' && (
-              <div style={{ position: 'absolute', top: -14, left: '50%', transform: 'translateX(-50%)', background: '#4f46e5', color: 'white', fontSize: 12, fontWeight: 700, padding: '4px 16px', borderRadius: 50, whiteSpace: 'nowrap' }}>
+              <div style={{ position: 'absolute', top: -14, left: '50%', transform: 'translateX(-50%)', background: '#336bbc', color: 'white', fontSize: 12, fontWeight: 700, padding: '4px 16px', borderRadius: 50, whiteSpace: 'nowrap' }}>
                 MOST POPULAR
               </div>
             )}
@@ -150,14 +150,14 @@ export default function PricingPage() {
               <span style={{ color: 'white', fontSize: 48, fontWeight: 800 }}>
                 ${annual ? plan.annualMonthly : plan.monthlyPrice}
               </span>
-              <span style={{ color: '#64748b', fontSize: 16 }}>/mo</span>
+              <span style={{ color: '#89a3c8', fontSize: 16 }}>/mo</span>
               {annual && (
-                <p style={{ color: '#34d399', fontSize: 13, margin: '4px 0 0' }}>
+                <p style={{ color: '#6fb1ff', fontSize: 13, margin: '4px 0 0' }}>
                   Billed ${plan.annualPrice} CAD/year
                 </p>
               )}
               {!annual && (
-                <p style={{ color: '#64748b', fontSize: 13, margin: '4px 0 0' }}>
+                <p style={{ color: '#89a3c8', fontSize: 13, margin: '4px 0 0' }}>
                   Billed monthly in CAD
                 </p>
               )}
@@ -168,9 +168,9 @@ export default function PricingPage() {
               disabled={loading === key}
               style={{
                 width: '100%',
-                background: key === 'pro' ? '#4f46e5' : '#1e293b',
+                background: key === 'pro' ? '#336bbc' : '#1f3a67',
                 color: 'white',
-                border: key === 'pro' ? 'none' : '1px solid #334155',
+                border: key === 'pro' ? 'none' : '1px solid #335282',
                 borderRadius: 10,
                 padding: '14px',
                 fontSize: 15,
@@ -187,14 +187,14 @@ export default function PricingPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {plan.features.map(f => (
                 <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <Check size={18} color="#34d399" style={{ flexShrink: 0 }} />
-                  <span style={{ color: '#cbd5e1', fontSize: 14 }}>{f}</span>
+                  <Check size={18} color="#6fb1ff" style={{ flexShrink: 0 }} />
+                  <span style={{ color: '#dbe7f8', fontSize: 14 }}>{f}</span>
                 </div>
               ))}
               {plan.notIncluded.map(f => (
                 <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <X size={18} color="#334155" style={{ flexShrink: 0 }} />
-                  <span style={{ color: '#334155', fontSize: 14 }}>{f}</span>
+                  <X size={18} color="#335282" style={{ flexShrink: 0 }} />
+                  <span style={{ color: '#335282', fontSize: 14 }}>{f}</span>
                 </div>
               ))}
             </div>
@@ -211,9 +211,9 @@ export default function PricingPage() {
           { q: 'Is there a free trial?', a: 'We offer a 14-day free trial on all plans. No credit card required to start.' },
           { q: 'What currency is this?', a: 'All prices are in Canadian dollars (CAD).' },
         ].map(item => (
-          <div key={item.q} style={{ textAlign: 'left', marginBottom: 20, background: '#0f172a', border: '1px solid #1e293b', borderRadius: 12, padding: '16px 20px' }}>
+          <div key={item.q} style={{ textAlign: 'left', marginBottom: 20, background: '#0c1f3f', border: '1px solid #1f3a67', borderRadius: 12, padding: '16px 20px' }}>
             <p style={{ color: 'white', fontWeight: 600, margin: '0 0 6px', fontSize: 15 }}>{item.q}</p>
-            <p style={{ color: '#64748b', margin: 0, fontSize: 14 }}>{item.a}</p>
+            <p style={{ color: '#89a3c8', margin: 0, fontSize: 14 }}>{item.a}</p>
           </div>
         ))}
       </div>

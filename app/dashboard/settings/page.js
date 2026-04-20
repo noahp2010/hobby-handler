@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 
+const DASHBOARD_THEME_KEY = 'hh-dashboard-theme'
+
 const inputClass = "w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 transition-colors"
 const LabelClass = "block text-sm text-slate-400 mb-1"
 
@@ -32,6 +34,15 @@ export default function SettingsPage() {
   const [msg, setMsg] = useState('')
   const [pwMsg, setPwMsg] = useState('')
   const [plan, setPlan] = useState(null)
+  const [theme, setTheme] = useState('dark')
+  const [themeMsg, setThemeMsg] = useState('')
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem(DASHBOARD_THEME_KEY)
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      setTheme(savedTheme)
+    }
+  }, [])
 
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data }) => {
@@ -104,6 +115,16 @@ export default function SettingsPage() {
  async function handleSignOut() {
     await supabase.auth.signOut()
     window.location.href = '/login'
+  }
+
+  function handleThemeChange(nextTheme) {
+    if (nextTheme !== 'light' && nextTheme !== 'dark') return
+
+    setTheme(nextTheme)
+    localStorage.setItem(DASHBOARD_THEME_KEY, nextTheme)
+    window.dispatchEvent(new CustomEvent('hh-theme-change', { detail: nextTheme }))
+    setThemeMsg(`Theme updated to ${nextTheme} mode.`)
+    setTimeout(() => setThemeMsg(''), 2500)
   }
 
   return (
@@ -205,6 +226,37 @@ export default function SettingsPage() {
             )}
           </div>
         </div>
+      </Section>
+
+      {/* Appearance */}
+      <Section title="Appearance" description="Choose how dashboard pages look for your account.">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button
+            onClick={() => handleThemeChange('dark')}
+            className={`rounded-xl border p-4 text-left transition-colors ${
+              theme === 'dark'
+                ? 'border-indigo-500 bg-indigo-950/60'
+                : 'border-slate-700 bg-slate-800 hover:bg-slate-700'
+            }`}
+          >
+            <p className="text-white font-semibold text-sm">Dark Mode</p>
+            <p className="text-slate-400 text-xs mt-1">Deep navy surfaces with bright accents.</p>
+          </button>
+
+          <button
+            onClick={() => handleThemeChange('light')}
+            className={`rounded-xl border p-4 text-left transition-colors ${
+              theme === 'light'
+                ? 'border-indigo-500 bg-indigo-950/60'
+                : 'border-slate-700 bg-slate-800 hover:bg-slate-700'
+            }`}
+          >
+            <p className="text-white font-semibold text-sm">Light Mode</p>
+            <p className="text-slate-400 text-xs mt-1">Brighter cards and surfaces for daytime use.</p>
+          </button>
+        </div>
+
+        {themeMsg && <p className="text-emerald-400 text-sm">{themeMsg}</p>}
       </Section>
 
       {/* Change password */}
