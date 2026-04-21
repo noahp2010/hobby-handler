@@ -79,6 +79,7 @@ export default function PricingPage() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        type: 'subscription',
         priceId,
         email: user.email,
         userId: user.id,
