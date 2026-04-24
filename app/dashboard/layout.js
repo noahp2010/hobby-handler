@@ -3,31 +3,30 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { supabase } from '../lib/supabase'
-// Import Lucide icons
 import { 
   LayoutDashboard, 
   Calendar, 
+  CheckCircle2,
+  FileText,
+  Gift,
+  Handshake,
+  LogOut,
+  Map,
+  Settings,
   Store, 
   Ticket, 
-  Map, 
-  Handshake, 
-  Gift, 
   Wallet, 
-  Settings,
-  LogOut, 
-  Paperclip
 } from 'lucide-react'
 
 const navItems = [
   { label: 'Dashboard',  href: '/dashboard',           icon: LayoutDashboard },
   { label: 'Events',     href: '/dashboard/events',    icon: Calendar },
   { label: 'Vendors',    href: '/dashboard/vendors',   icon: Store },
-  { label: 'Ticketing',  href: '/dashboard/tickets',   icon: Ticket },
-  { label: 'Invoices',   href: '/dashboard/invoices',  icon: Paperclip },
   { label: 'Floor Plan', href: '/dashboard/floorplan', icon: Map },
   { label: 'Sponsors',   href: '/dashboard/sponsors',  icon: Handshake },
   { label: 'Giveaways',  href: '/dashboard/giveaways', icon: Gift },
   { label: 'Budget',     href: '/dashboard/budget',    icon: Wallet },
+  { label: 'Invoices',   href: '/dashboard/invoices',  icon: FileText },
   { label: 'Settings',   href: '/dashboard/settings',  icon: Settings },
 ]
 
@@ -97,7 +96,7 @@ export default function DashboardLayout({ children }) {
         <nav style={{ flex: 1, padding: '12px', overflowY: 'auto' }}>
           {navItems.map((item) => {
             const active = pathname === item.href
-            const Icon = item.icon // Capitalize to use as a component
+            const Icon = item.icon
             
             return (
               <Link
@@ -130,7 +129,6 @@ export default function DashboardLayout({ children }) {
                   }
                 }}
               >
-                {/* Render the Lucide Icon component */}
                 <Icon size={18} strokeWidth={active ? 2.5 : 2} />
                 {item.label}
               </Link>

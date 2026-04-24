@@ -34,10 +34,10 @@ const emptyForm = {
 }
 
 const tierColors = {
-  bronze:   { bg: 'bg-orange-950', text: 'text-orange-400' },
-  silver:   { bg: 'bg-slate-800',  text: 'text-slate-300'  },
-  gold:     { bg: 'bg-amber-950',  text: 'text-amber-400'  },
-  platinum: { bg: 'bg-indigo-950', text: 'text-indigo-400' },
+  bronze:   { bg: 'bg-slate-800',  text: 'text-slate-300'  },
+  silver:   { bg: 'bg-slate-700',  text: 'text-slate-200'  },
+  gold:     { bg: 'bg-indigo-950', text: 'text-indigo-300' },
+  platinum: { bg: 'bg-indigo-900', text: 'text-indigo-200' },
 }
 
 export default function SponsorsPage() {
@@ -167,7 +167,7 @@ export default function SponsorsPage() {
         </div>
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
           <p className="text-slate-400 text-sm">Total Value</p>
-          <p className="text-2xl font-bold text-amber-400 mt-1">${totalValue.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-indigo-300 mt-1">${totalValue.toFixed(2)}</p>
         </div>
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
           <p className="text-slate-400 text-sm">Confirmed Value</p>

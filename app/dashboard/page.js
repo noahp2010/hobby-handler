@@ -87,7 +87,7 @@ export default function DashboardPage() {
         <StatCard label="Total Events"   value={stats.events}  sub="All time"            color="text-white" />
         <StatCard label="Total Vendors"  value={stats.vendors} sub="Across all events"   color="text-indigo-400" />
         <StatCard label="Tickets Sold"   value={stats.tickets} sub="Across all events"   color="text-emerald-400" />
-        <StatCard label="Total Revenue"  value={`$${stats.revenue}`} sub="Ticket sales"  color="text-amber-400" />
+        <StatCard label="Total Revenue"  value={`$${stats.revenue}`} sub="Ticket sales"  color="text-indigo-300" />
       </div>
 
       {/* Quick links */}
