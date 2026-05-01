@@ -59,6 +59,128 @@ const emptyFieldForm = {
   options: '', required: false, sort_order: 0,
 }
 
+function PaymentSettingsCard({ selectedEvent, supabaseClient }) {
+  const [fee, setFee] = useState('')
+  const [feeDesc, setFeeDesc] = useState('Vendor Booth Fee')
+  const [required, setRequired] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [stripeConnected, setStripeConnected] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!selectedEvent) return
+    setLoading(true)
+    Promise.all([
+      supabaseClient.from('vendor_payment_settings').select('*').eq('event_id', selectedEvent).single(),
+      supabaseClient.auth.getUser().then(({ data }) =>
+        data.user
+          ? supabaseClient.from('subscriptions').select('stripe_connect_enabled').eq('user_id', data.user.id).single()
+          : null
+      ),
+    ]).then(([{ data: ps }, subResult]) => {
+      if (ps) {
+        setFee(ps.booth_fee || '')
+        setFeeDesc(ps.fee_description || 'Vendor Booth Fee')
+        setRequired(ps.payment_required || false)
+      } else {
+        setFee('')
+        setFeeDesc('Vendor Booth Fee')
+        setRequired(false)
+      }
+      if (subResult?.data?.stripe_connect_enabled) setStripeConnected(true)
+      setLoading(false)
+    })
+  }, [selectedEvent])
+
+  async function save() {
+    if (!selectedEvent) return
+    setSaving(true)
+    await supabaseClient.from('vendor_payment_settings').upsert({
+      event_id: selectedEvent,
+      booth_fee: parseFloat(fee) || 0,
+      fee_description: feeDesc,
+      payment_required: required,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'event_id' })
+    setSaving(false)
+    setSaved(true)
+    setTimeout(() => setSaved(false), 3000)
+  }
+
+  if (loading) return null
+
+  return (
+    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 mb-4">
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+        <div>
+          <h3 className="text-white font-semibold text-sm">Booth Fee Payment</h3>
+          <p className="text-slate-500 text-xs mt-0.5">Collect booth fees from vendors when they register.</p>
+        </div>
+        {!stripeConnected ? (
+          <a href="/dashboard/settings" className="text-xs bg-amber-950 border border-amber-800 text-amber-400 px-3 py-1.5 rounded-lg hover:bg-amber-900 transition-colors">
+            Connect Stripe first →
+          </a>
+        ) : (
+          <span className="text-xs bg-emerald-950 border border-emerald-800 text-emerald-400 px-3 py-1.5 rounded-lg">
+            ✓ Stripe Connected
+          </span>
+        )}
+      </div>
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs text-slate-500 mb-1">Booth Fee (CAD)</label>
+            <input
+              type="number"
+              className="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500"
+              value={fee}
+              onChange={e => setFee(e.target.value)}
+              placeholder="0.00"
+            />
+          </div>
+          <div>
+            <label className="block text-xs text-slate-500 mb-1">Fee Description</label>
+            <input
+              className="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500"
+              value={feeDesc}
+              onChange={e => setFeeDesc(e.target.value)}
+              placeholder="Vendor Booth Fee"
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="pay_required"
+            checked={required}
+            onChange={e => setRequired(e.target.checked)}
+            className="w-4 h-4 accent-indigo-500"
+          />
+          <label htmlFor="pay_required" className="text-xs text-slate-400 cursor-pointer">
+            Require payment to complete registration
+          </label>
+        </div>
+        {!stripeConnected && parseFloat(fee) > 0 && (
+          <div className="bg-amber-950 border border-amber-800 rounded-lg px-4 py-3">
+            <p className="text-amber-400 text-xs">Connect your Stripe account in Settings before vendors can pay online.</p>
+          </div>
+        )}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={save}
+            disabled={saving}
+            className="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors"
+          >
+            {saving ? 'Saving...' : 'Save Payment Settings'}
+          </button>
+          {saved && <p className="text-emerald-400 text-xs">Saved!</p>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function VendorsPage() {
   const [tab, setTab] = useState('applications')
   const [events, setEvents] = useState([])
@@ -319,6 +441,50 @@ export default function VendorsPage() {
       alert('Test email sent to ' + testEmailAddress)
     } finally {
       setSendTestLoading(false)
+    }
+  }
+
+  async function sendPaymentLink(app, action) {
+    if (!app.payment_amount || app.payment_amount <= 0) {
+      alert('This vendor has no booth fee set. Edit the vendor first to add a payment amount.')
+      return
+    }
+    if (!app.email) {
+      alert('This vendor has no email address on file.')
+      return
+    }
+
+    const { data: { user } } = await supabase.auth.getUser()
+
+    // Get organizer's Stripe connect status
+    const { data: sub } = await supabase
+      .from('subscriptions')
+      .select('stripe_connect_id, stripe_connect_enabled')
+      .eq('user_id', user.id)
+      .single()
+
+    if (!sub?.stripe_connect_id || !sub?.stripe_connect_enabled) {
+      alert('Please connect your Stripe account in Settings first.')
+      return
+    }
+
+    const res = await fetch('/api/vendors/payment-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        vendorApplicationId: app.id,
+        sendEmail: action === 'email',
+      }),
+    })
+    const data = await res.json()
+    if (data.error) { alert('Error: ' + data.error); return }
+
+    if (action === 'copy') {
+      navigator.clipboard.writeText(data.url)
+      setCopyMsg('paylink_' + app.id)
+      setTimeout(() => setCopyMsg(''), 2500)
+    } else {
+      alert('Payment link emailed to ' + app.email + '!')
     }
   }
 
@@ -589,6 +755,7 @@ export default function VendorsPage() {
             </button>
           </div>
 
+          <PaymentSettingsCard selectedEvent={selectedEvent} supabaseClient={supabase} />
           <div className="bg-indigo-950 border border-indigo-800 rounded-xl px-5 py-4">
             <p className="text-indigo-300 text-sm font-medium">These fields appear on your public vendor registration form.</p>
             <p className="text-indigo-400 text-xs mt-1">Business Name, Contact Name, Email, and Phone are always included by default.</p>
@@ -912,6 +1079,25 @@ export default function VendorsPage() {
                     </button>
                   ))}
                 </div>
+                {showDetailModal.payment_status !== 'paid' && showDetailModal.email && (
+                <div className="mt-3 space-y-2">
+                  <p className="text-slate-500 text-xs font-semibold uppercase tracking-wide">Send Payment Link</p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => sendPaymentLink(showDetailModal, 'email')}
+                      className="flex-1 bg-indigo-900 hover:bg-indigo-800 text-indigo-300 text-xs font-semibold py-2 rounded-lg transition-colors"
+                    >
+                      📧 Email Link
+                    </button>
+                    <button
+                      onClick={() => sendPaymentLink(showDetailModal, 'copy')}
+                      className={`flex-1 text-xs font-semibold py-2 rounded-lg transition-colors ${copyMsg === 'paylink_' + showDetailModal.id ? 'bg-emerald-900 text-emerald-300' : 'bg-slate-700 hover:bg-slate-600 text-slate-300'}`}
+                    >
+                      {copyMsg === 'paylink_' + showDetailModal.id ? '✓ Copied!' : '🔗 Copy Link'}
+                    </button>
+                  </div>
+                </div>
+              )}
               </div>
 
               <div className="bg-slate-800 rounded-xl p-4">

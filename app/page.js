@@ -1,6 +1,7 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Calendar, Store, Ticket, Map, Handshake, Gift, Wallet, FileText, Check } from 'lucide-react'
+import Logo from './components/logo'
 
 const FEATURES = [
   {
@@ -13,11 +14,7 @@ const FEATURES = [
     title: 'Vendor Management',
     description: 'Onboard vendors, assign booth numbers, track payments, and manage applications all in one place.',
   },
-  {
-    icon: Ticket,
-    title: 'Ticketing with QR Codes',
-    description: 'Issue tickets instantly with unique QR codes. Scan at the door using any mobile device.',
-  },
+
   {
     icon: Map,
     title: 'Floor Plan Builder',
@@ -81,7 +78,6 @@ const PLANS = [
       '60 vendors max per event',
       'Budgeting and finance tools',
       'Invoice generation',
-      'Ticketing with QR codes',
       'Event management',
       'Floor plan builder',
     ],
@@ -105,15 +101,43 @@ const PLANS = [
 export default function LandingPage() {
   const [annual, setAnnual] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [logoSize, setLogoSize] = useState('hero')
+
+  // compute responsive logo size on client
+  useEffect(() => {
+    function updateSize() {
+      const w = window.innerWidth
+      if (w >= 1400) setLogoSize('hero')
+      else if (w >= 1100) setLogoSize('xl')
+      else if (w >= 800) setLogoSize('lg')
+      else if (w >= 480) setLogoSize('md')
+      else setLogoSize('sm')
+    }
+    updateSize()
+    window.addEventListener('resize', updateSize)
+    return () => window.removeEventListener('resize', updateSize)
+  }, [])
+
+  // container sizes to match Logo SIZE_MAP
+  const LOGO_BOX = {
+    hero: { width: 560, height: 150 },
+    xl: { width: 280, height: 72 },
+    lg: { width: 244, height: 62 },
+    md: { width: 208, height: 54 },
+    sm: { width: 164, height: 44 },
+    xs: { width: 40, height: 40 },
+  }
+
+  const box = LOGO_BOX[logoSize] || LOGO_BOX.hero
 
   return (
     <div style={{ background: '#020b1c', minHeight: '100vh', fontFamily: 'sans-serif', color: 'white' }}>
 
       {/* Nav */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(2,11,28,0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #1f3a67', paddingTop: 8 }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 72 }}>
-          <div style={{ width: 280, height: 72, position: 'relative' }}>
-            <img src="/logo.svg" alt="Hobby Handler" style={{ height: 152, maxWidth: '100%', width: 'auto', position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }} />
+      <nav style={{ background: 'rgba(2,11,28,0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #1f3a67', paddingTop: 2 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: Math.max(56, box.height - 10) }}>
+            <div style={{ width: box.width, height: box.height, position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <Logo size={logoSize} showFull />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -131,7 +155,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section style={{ maxWidth: 1100, margin: '0 auto', padding: '100px 24px 80px', textAlign: 'center' }}>
+      <section style={{ maxWidth: 1100, margin: '0 auto', padding: '48px 12px 32px', textAlign: 'center' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#0c1f3f', border: '1px solid #1f3a67', borderRadius: 50, padding: '6px 16px', marginBottom: 28 }}>
           <span style={{ width: 8, height: 8, background: '#6fb1ff', borderRadius: '50%', display: 'inline-block' }}></span>
           <span style={{ color: '#b8cbe4', fontSize: 13 }}>Built for collectible event organizers</span>
@@ -206,21 +230,32 @@ export default function LandingPage() {
           <p style={{ color: '#89a3c8', fontSize: 18, margin: 0 }}>Eight powerful tools built specifically for collectible event organizers.</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
-          {FEATURES.map(feature => {
-            const IconComponent = feature.icon
-            return (
-              <div
-                key={feature.title}
-                style={{ background: '#0c1f3f', border: '1px solid #1f3a67', borderRadius: 16, padding: 24 }}
-              >
-                <div style={{ marginBottom: 14 }}><IconComponent size={32} color="#336bbc" /></div>
-                <h3 style={{ color: 'white', fontSize: 16, fontWeight: 700, margin: '0 0 8px' }}>{feature.title}</h3>
-                <p style={{ color: '#89a3c8', fontSize: 14, margin: 0, lineHeight: 1.6 }}>{feature.description}</p>
-              </div>
-            )
-          })}
-        </div>
+        {[FEATURES.slice(0, 4), FEATURES.slice(4)].map((row, rowIndex) => (
+          <div
+            key={rowIndex}
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: 20,
+              marginBottom: rowIndex === 0 ? 20 : 0,
+            }}
+          >
+            {row.map(feature => {
+              const IconComponent = feature.icon
+              return (
+                <div
+                  key={feature.title}
+                  style={{ width: 240, maxWidth: '100%', background: '#0c1f3f', border: '1px solid #1f3a67', borderRadius: 16, padding: 24 }}
+                >
+                  <div style={{ marginBottom: 14 }}><IconComponent size={32} color="#336bbc" /></div>
+                  <h3 style={{ color: 'white', fontSize: 16, fontWeight: 700, margin: '0 0 8px' }}>{feature.title}</h3>
+                  <p style={{ color: '#89a3c8', fontSize: 14, margin: 0, lineHeight: 1.6 }}>{feature.description}</p>
+                </div>
+              )
+            })}
+          </div>
+        ))}
       </section>
 
       {/* Testimonials */}
@@ -257,10 +292,10 @@ export default function LandingPage() {
 
       {/* Pricing */}
       <section id="pricing" style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 24px' }}>
-        <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <h2 style={{ fontSize: 36, fontWeight: 800, margin: '0 0 16px' }}>Simple, transparent pricing</h2>
-          <p style={{ color: '#89a3c8', fontSize: 18, margin: '0 0 32px' }}>All prices in Canadian dollars. Cancel anytime.</p>
-
+          <div style={{ textAlign: 'center', marginBottom: 28 }}>
+            <p style={{ color: '#818cf8', fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, margin: '0 0 12px' }}>Pricing</p>
+            <h1 style={{ color: 'white', fontSize: 42, fontWeight: 900, margin: '0 0 14px', letterSpacing: -1 }}>Simple, honest pricing</h1>
+            <p style={{ color: '#64748b', fontSize: 18, margin: '0 0 32px' }}>14-day free trial on all plans. No credit card required to start.</p>
           <div style={{ display: 'inline-flex', background: '#0c1f3f', border: '1px solid #1f3a67', borderRadius: 50, padding: 4 }}>
             <button
               onClick={() => setAnnual(false)}
@@ -339,16 +374,18 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer style={{ borderTop: '1px solid #1f3a67', padding: '40px 24px' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 20 }}>
-          <div style={{ marginBottom: 0 }}>
-            <img src="/logo.svg" alt="Hobby Handler" style={{ height: 140, maxWidth: '100%', width: 'auto' }} />
-          </div>
+      <footer style={{ borderTop: '1px solid #1f3a67', padding: '24px 16px' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+           <div style={{ marginBottom: 0, width: box.width, height: box.height, display: 'flex', alignItems: 'center' }}>
+            <Logo size={logoSize} showFull />
+           </div>
 
           <div style={{ display: 'flex', gap: 24 }}>
             <a href="#features" style={{ color: '#89a3c8', fontSize: 14, textDecoration: 'none' }}>Features</a>
             <a href="#pricing" style={{ color: '#89a3c8', fontSize: 14, textDecoration: 'none' }}>Pricing</a>
             <a href="/pricing" style={{ color: '#89a3c8', fontSize: 14, textDecoration: 'none' }}>Plans</a>
+            <a href="/terms" style={{ color: '#89a3c8', fontSize: 14, textDecoration: 'none' }}>Terms</a>
+            <a href="/privacy" style={{ color: '#89a3c8', fontSize: 14, textDecoration: 'none' }}>Privacy</a>
             <a href="/login" style={{ color: '#89a3c8', fontSize: 14, textDecoration: 'none' }}>Sign in</a>
           </div>
 
